@@ -6,31 +6,38 @@ Catálogo de filmes e séries com experiência inspirada em plataformas de strea
 
 ## Sumário
 
-- [Sobre o projeto](#sobre-o-projeto)
-- [Tecnologias](#tecnologias)
-- [Requisitos](#requisitos)
-- [Instalação manual](#instalação-manual)
-- [Instalação automática](#instalação-automática)
-- [Ambiente virtual](#ambiente-virtual)
-- [Variáveis de ambiente](#variáveis-de-ambiente)
-- [OMDb](#omdb)
-- [Resend](#resend)
-- [SuperFlixAPI](#superflixapi)
-- [SQLite](#sqlite)
-- [PostgreSQL](#postgresql)
-- [Migrações](#migrações)
-- [Superusuário](#superusuário)
-- [Executar o projeto](#executar-o-projeto)
-- [Testes](#testes)
-- [Estrutura do projeto](#estrutura-do-projeto)
-- [Segurança](#segurança)
-- [Rate limiting](#rate-limiting)
-- [APIs externas](#apis-externas)
-- [E-mails](#e-mails)
-- [Decisões arquiteturais](#decisões-arquiteturais)
-- [Decisões técnicas](#decisões-técnicas)
-- [Limitações](#limitações)
-- [Licença](#licença)
+- [VoxterFlix](#voxterflix)
+  - [Sumário](#sumário)
+  - [Sobre o projeto](#sobre-o-projeto)
+  - [Tecnologias](#tecnologias)
+  - [Requisitos](#requisitos)
+  - [Executar](#executar)
+  - [Instalação manual](#instalação-manual)
+    - [Windows](#windows)
+    - [Linux/macOS](#linuxmacos)
+  - [Instalação automática](#instalação-automática)
+    - [Windows](#windows-1)
+    - [Linux/macOS](#linuxmacos-1)
+  - [Ambiente virtual](#ambiente-virtual)
+  - [Variáveis de ambiente](#variáveis-de-ambiente)
+  - [OMDb](#omdb)
+  - [Resend](#resend)
+  - [SuperFlixAPI](#superflixapi)
+  - [SQLite](#sqlite)
+  - [PostgreSQL](#postgresql)
+  - [Migrações](#migrações)
+  - [Superusuário](#superusuário)
+  - [Executar o projeto](#executar-o-projeto)
+  - [Testes](#testes)
+  - [Estrutura do projeto](#estrutura-do-projeto)
+  - [Segurança](#segurança)
+  - [Rate limiting](#rate-limiting)
+  - [APIs externas](#apis-externas)
+  - [E-mails](#e-mails)
+  - [Decisões arquiteturais](#decisões-arquiteturais)
+  - [Decisões técnicas](#decisões-técnicas)
+  - [Limitações](#limitações)
+  - [Licença](#licença)
 
 ## Sobre o projeto
 
@@ -57,6 +64,18 @@ O projeto foi construído para que qualquer pessoa com conhecimento básico de p
 - Git
 
 Não é necessário instalar PostgreSQL, Docker, Node.js ou Redis para rodar a versão padrão do projeto.
+
+## Executar
+
+Caso já tenha tudo instalado, apenas execute:
+
+```bash
+#se o ambiente virtual ainda não estiver ativado
+venv\Scripts\activate
+
+
+python manage.py runserver
+```
 
 ## Instalação manual
 

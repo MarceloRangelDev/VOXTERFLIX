@@ -19,7 +19,7 @@ echo "========================================"
 echo
 
 # --------------------------------------------------------------------
-# [1/8] Verifica se o Python 3 esta instalado.
+# [1/8] Verifica se o Python 3 esta instalado. Se nao estiver, exibe instrucoes de instalacao e encerra.
 # --------------------------------------------------------------------
 echo "[1/8] Verificando Python..."
 if ! command -v python3 >/dev/null 2>&1; then

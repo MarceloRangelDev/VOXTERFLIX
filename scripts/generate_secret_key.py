@@ -16,7 +16,7 @@ config/settings.py), o script não mexe em nada.
 Uso:
     python scripts/generate_secret_key.py
 """
-
+ 
 from __future__ import annotations
 
 import re

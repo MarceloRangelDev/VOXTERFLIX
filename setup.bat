@@ -111,7 +111,7 @@ if /i "%CRIAR_ADMIN%"=="S" (
 echo.
 
 REM --------------------------------------------------------------------
-REM [7/8] Gera uma SECRET_KEY aleatoria e grava no .env, caso ele ainda
+REM [7/8] Gera uma SECRET_KEY aleatoria e grava no .env, caso ele ainda 
 REM esteja com o valor inseguro padrao (ou vazio). Feito em Python (nao
 REM inline no .bat) porque a chave tem caracteres especiais ($, &, !, %,
 REM parenteses...) que o CMD interpretaria incorretamente.
