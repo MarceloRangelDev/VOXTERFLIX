@@ -73,6 +73,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 
 copy .env.example .env
+python scripts\generate_secret_key.py
 
 python manage.py migrate
 python manage.py seed_catalog
@@ -94,6 +95,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 
 cp .env.example .env
+python scripts/generate_secret_key.py
 
 python manage.py migrate
 python manage.py seed_catalog
@@ -120,8 +122,8 @@ O script:
 3. Instala as dependências;
 4. Cria o `.env` a partir do `.env.example` (só se ainda não existir — nunca sobrescreve);
 5. Executa as migrações;
-6. Popula o catálogo inicial (`seed_catalog`);
-7. Pergunta se você quer criar um superusuário agora;
+6. Popula o catálogo inicial (`seed_catalog`) e pergunta se você quer criar um superusuário agora;
+7. Gera uma `SECRET_KEY` aleatória e grava no `.env` — só quando ele ainda está com o valor padrão de desenvolvimento (nunca sobrescreve uma chave que você já tenha configurado);
 8. Pergunta se você quer iniciar o servidor agora.
 
 É seguro executar `setup.bat` mais de uma vez: ele nunca apaga `venv/`, `.env` ou `db.sqlite3` já existentes.
@@ -153,7 +155,7 @@ Todas as configurações sensíveis ficam em um arquivo `.env` (nunca versionado
 
 | Variável | Descrição |
 |---|---|
-| `SECRET_KEY` | Chave secreta do Django. Gere uma nova por ambiente. |
+| `SECRET_KEY` | Chave secreta do Django. Gerada automaticamente por `scripts/generate_secret_key.py` (chamado tanto pela instalação manual quanto pelos scripts `setup.bat`/`setup.sh`) — só se ainda estiver vazia ou com o valor padrão de desenvolvimento. |
 | `DEBUG` | `True` em desenvolvimento, `False` em produção. |
 | `ALLOWED_HOSTS` | Hosts permitidos, separados por vírgula. |
 | `DATABASE_URL` | String de conexão do banco (SQLite por padrão, PostgreSQL opcional). |
@@ -242,6 +244,8 @@ voxterflix/
 ├── manage.py
 ├── requirements.txt
 ├── setup.bat / setup.sh        # instalação automatizada
+├── scripts/
+│   └── generate_secret_key.py  # usado pela instalação manual e pelos setup.*
 ├── .env.example
 │
 ├── config/                     # settings, urls, wsgi/asgi

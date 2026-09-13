@@ -16,9 +16,9 @@ echo ========================================
 echo.
 
 REM --------------------------------------------------------------------
-REM [1/7] Verifica se o Python esta instalado e acessivel no PATH.
+REM [1/8] Verifica se o Python esta instalado e acessivel no PATH.
 REM --------------------------------------------------------------------
-echo [1/7] Verificando Python...
+echo [1/8] Verificando Python...
 where python >nul 2>nul
 if errorlevel 1 (
     echo.
@@ -33,9 +33,9 @@ echo OK - Python %PYTHON_VERSION% encontrado.
 echo.
 
 REM --------------------------------------------------------------------
-REM [2/7] Cria o ambiente virtual somente se ele ainda nao existir.
+REM [2/8] Cria o ambiente virtual somente se ele ainda nao existir.
 REM --------------------------------------------------------------------
-echo [2/7] Preparando ambiente virtual...
+echo [2/8] Preparando ambiente virtual...
 if exist "venv\Scripts\python.exe" (
     echo Ambiente virtual ja existe. Reutilizando...
 ) else (
@@ -50,9 +50,9 @@ if exist "venv\Scripts\python.exe" (
 echo.
 
 REM --------------------------------------------------------------------
-REM [3/7] Atualiza o pip e instala as dependencias do requirements.txt.
+REM [3/8] Atualiza o pip e instala as dependencias do requirements.txt.
 REM --------------------------------------------------------------------
-echo [3/7] Instalando dependencias...
+echo [3/8] Instalando dependencias...
 call "venv\Scripts\python.exe" -m pip install --upgrade pip --quiet
 if errorlevel 1 (
     echo.
@@ -70,10 +70,10 @@ echo OK - Dependencias instaladas.
 echo.
 
 REM --------------------------------------------------------------------
-REM [4/7] Cria o .env a partir do .env.example, sem nunca sobrescrever
+REM [4/8] Cria o .env a partir do .env.example, sem nunca sobrescrever
 REM um .env que ja exista (evita apagar configuracoes do usuario).
 REM --------------------------------------------------------------------
-echo [4/7] Configurando ambiente...
+echo [4/8] Configurando ambiente...
 if exist ".env" (
     echo .env ja existe. Mantendo configuracao atual...
 ) else (
@@ -85,9 +85,9 @@ if exist ".env" (
 echo.
 
 REM --------------------------------------------------------------------
-REM [5/7] Executa as migracoes (idempotente: nao recria o que ja existe).
+REM [5/8] Executa as migracoes (idempotente: nao recria o que ja existe).
 REM --------------------------------------------------------------------
-echo [5/7] Executando migracoes...
+echo [5/8] Executando migracoes...
 call "venv\Scripts\python.exe" manage.py migrate
 if errorlevel 1 (
     echo.
@@ -98,9 +98,9 @@ echo OK - Banco de dados atualizado.
 echo.
 
 REM --------------------------------------------------------------------
-REM [6/7] Popula o catalogo inicial e pergunta se deseja criar um admin.
+REM [6/8] Popula o catalogo inicial e pergunta se deseja criar um admin.
 REM --------------------------------------------------------------------
-echo [6/7] Populando catalogo inicial...
+echo [6/8] Populando catalogo inicial...
 call "venv\Scripts\python.exe" manage.py seed_catalog
 echo.
 
@@ -110,7 +110,24 @@ if /i "%CRIAR_ADMIN%"=="S" (
 )
 echo.
 
-echo [7/7] Instalacao concluida!
+REM --------------------------------------------------------------------
+REM [7/8] Gera uma SECRET_KEY aleatoria e grava no .env, caso ele ainda
+REM esteja com o valor inseguro padrao (ou vazio). Feito em Python (nao
+REM inline no .bat) porque a chave tem caracteres especiais ($, &, !, %,
+REM parenteses...) que o CMD interpretaria incorretamente.
+REM --------------------------------------------------------------------
+echo [7/8] Gerando SECRET_KEY...
+call "venv\Scripts\python.exe" scripts\generate_secret_key.py
+if errorlevel 1 (
+    echo.
+    echo AVISO: Nao foi possivel gerar a SECRET_KEY automaticamente.
+    echo Gere uma manualmente com:
+    echo   venv\Scripts\python.exe -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+    echo e cole o resultado em SECRET_KEY= no arquivo .env.
+)
+echo.
+
+echo [8/8] Instalacao concluida!
 echo.
 echo ========================================
 echo.
