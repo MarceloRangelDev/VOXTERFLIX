@@ -54,3 +54,36 @@ class ProfileTests(TestCase):
         other_profile = Profile.objects.create(user=other_user, name="Alheio", avatar="azul")
         response = self.client.get(reverse("profiles:ativar", args=[other_profile.id]))
         self.assertEqual(response.status_code, 404)
+
+
+class KidsProfileAdminAclTests(TestCase):
+    """Um perfil infantil não pode acessar a administração, mesmo que a
+    conta seja staff/superuser (a restrição precisa valer no backend, não
+    só esconder o link no menu)."""
+
+    def setUp(self):
+        self.staff_user = User.objects.create_user(
+            username="staff_pai", email="staff@exemplo.com", password="SenhaForte123!", is_staff=True
+        )
+        self.client.force_login(self.staff_user)
+
+    def _activate(self, profile):
+        session = self.client.session
+        session["active_profile_id"] = profile.id
+        session.save()
+
+    def test_kids_profile_is_redirected_away_from_admin(self):
+        kids_profile = Profile.objects.create(user=self.staff_user, name="Kids", avatar="verde", is_kids=True)
+        self._activate(kids_profile)
+
+        response = self.client.get(reverse("admin:index"), follow=True)
+
+        self.assertRedirects(response, reverse("profiles:selecionar"))
+
+    def test_non_kids_profile_can_access_admin(self):
+        adult_profile = Profile.objects.create(user=self.staff_user, name="Pai", avatar="azul", is_kids=False)
+        self._activate(adult_profile)
+
+        response = self.client.get(reverse("admin:index"))
+
+        self.assertEqual(response.status_code, 200)

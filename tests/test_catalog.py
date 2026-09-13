@@ -62,6 +62,40 @@ class SearchViewTests(LoggedInTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Nenhum resultado encontrado")
 
+    @patch("apps.catalog.views.OMDbService")
+    def test_search_paginates_using_omdb_page_param(self, mock_service_class):
+        """A página pedida pelo usuário deve ser repassada para a OMDb —
+        não devemos buscar tudo de uma vez e paginar em memória."""
+        mock_service_class.return_value.search.return_value = (
+            [TitleSummary(imdb_id="tt0111161", title="Shawshank", year="1994", type="movie", poster="")],
+            25,  # total de resultados na OMDb, maior que uma página
+        )
+
+        response = self.client.get(reverse("catalog:buscar"), {"q": "batman", "page": "2"})
+
+        mock_service_class.return_value.search.assert_called_once_with("batman", type_="", page=2)
+        self.assertEqual(response.context["current_page"], 2)
+        self.assertEqual(response.context["total_pages"], 3)  # ceil(25/10)
+        self.assertTrue(response.context["has_previous"])
+        self.assertTrue(response.context["has_next"])
+        self.assertContains(response, "página 2 de 3")
+
+    @patch("apps.catalog.views.OMDbService")
+    def test_sorting_plain_results_does_not_call_omdb_again(self, mock_service_class):
+        """Ordenar por nota em uma busca simples não pode disparar uma
+        chamada extra à OMDb por item (isso deixava a busca muito lenta)."""
+        mock_service_class.return_value.search.return_value = (
+            [
+                TitleSummary(imdb_id="tt0000001", title="A", year="2000", type="movie", poster=""),
+                TitleSummary(imdb_id="tt0000002", title="B", year="2010", type="movie", poster=""),
+            ],
+            2,
+        )
+
+        self.client.get(reverse("catalog:buscar"), {"q": "batman", "sort": "rating_desc"})
+
+        mock_service_class.return_value.get_by_imdb_id.assert_not_called()
+
 
 class DetailViewTests(LoggedInTestCase):
     @patch("apps.catalog.views.OMDbService")

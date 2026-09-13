@@ -12,7 +12,7 @@ body {
 }
 
 a {
-  color: var(--voxter-secondary);
+  color: var(--voxter-primary-dark);
   text-decoration: none;
 }
 
@@ -59,7 +59,7 @@ textarea:focus-visible,
   font-weight: 800;
   font-size: 1.35rem;
   letter-spacing: 0.5px;
-  color: var(--voxter-text) !important;
+  color: var(--voxter-primary) !important;
 }
 
 .voxter-brand-accent {
@@ -73,7 +73,7 @@ textarea:focus-visible,
 
 .voxter-navbar .nav-link:hover,
 .voxter-navbar .nav-link.active {
-  color: var(--voxter-text);
+  color: var(--voxter-primary);
 }
 
 .voxter-search-input {

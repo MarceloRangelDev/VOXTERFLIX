@@ -5,7 +5,7 @@
  * empresa.
  */
 :root {
-  --voxter-primary: #0066FF;
+  /* --voxter-primary: #0066FF;
   --voxter-primary-dark: #0047B3;
   --voxter-secondary: #00AEEF;
 
@@ -16,7 +16,21 @@
   --voxter-text: #FFFFFF;
   --voxter-text-muted: #A8B6C7;
 
-  --voxter-border: #243B53;
+  --voxter-border: #243B53; */
+
+   /* === Cores da Marca Voxter === */
+  --voxter-primary:         #DB545A;  /* Vermelho Voxter — --e-global-color-primary */
+  --voxter-primary-dark:    #A92C32;  /* Vermelho escuro — hover de botões/CTA */
+  --voxter-secondary:       #F3F5F8;  /* Cinza claro — --e-global-color-secondary */
+  /* === Backgrounds === */
+  --voxter-bg:              #FFFFFF;  /* Branco — background do body (--e-global-color-c696dce) */
+  --voxter-bg-secondary:    #F9FAFD;  /* Off-white azulado — seções alternadas (--e-global-color-764183d) */
+  --voxter-card:            #F3F5F8;  /* Cinza claro — fundo de cards/seções */
+  /* === Texto === */
+  --voxter-text:            #333333;  /* Cinza escuro — corpo de texto (--e-global-color-text) */
+  --voxter-text-muted:      #C8D5DC;  /* Cinza azulado — texto secundário (--e-global-color-14ef391) */
+  /* === Bordas === */
+  --voxter-border:          #C8D5DC;  /* Cinza azulado — bordas (--e-global-color-14ef391) */
 
   --success: #20C997;
   --danger: #FF4D67;

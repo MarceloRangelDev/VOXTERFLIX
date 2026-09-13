@@ -17,13 +17,15 @@
 .voxter-btn-outline {
   background-color: transparent;
   border: 1px solid var(--voxter-border);
-  color: var(--voxter-text);
+  color: var(--voxter-primary);
   font-weight: 600;
 }
 
 .voxter-btn-outline:hover {
-  border-color: var(--voxter-secondary);
-  color: var(--voxter-secondary);
+  background-color: transparent;
+  border: 1px solid var(--voxter-border);
+  color: var(--voxter-primary);
+  font-weight: 600;
 }
 
 .voxter-btn-ghost {
@@ -77,14 +79,14 @@
 }
 
 .voxter-card label {
-  color: var(--voxter-text-muted);
+  color: var(--voxter-text);
   font-weight: 500;
   margin-bottom: 0.35rem;
 }
 
 .form-text,
 .invalid-feedback {
-  color: var(--voxter-text-muted);
+  color: var(--voxter-text);
 }
 
 .is-invalid ~ .invalid-feedback,
@@ -130,7 +132,11 @@
 .voxter-avatar-btn {
   background: transparent;
   border: none;
-  color: var(--voxter-text);
+  color: var(--voxter-text-muted);
+}
+
+.voxter-avatar-btn:hover {
+  color: var(--voxter-text-muted);
 }
 
 .voxter-dropdown {
@@ -144,7 +150,7 @@
 
 .voxter-dropdown .dropdown-item:hover {
   background-color: var(--voxter-bg-secondary);
-  color: var(--voxter-secondary);
+  color: var(--voxter-primary);
 }
 
 /* Badges de classificação/nota */
@@ -157,11 +163,11 @@
   border-radius: var(--voxter-radius-sm);
   padding: 0.15rem 0.6rem;
   font-size: 0.8rem;
-  color: var(--voxter-text-muted);
+  color: var(--voxter-text);
 }
 
 .voxter-badge-rating {
-  color: #ffd166;
+  color: var(--voxter-text);
   border-color: #ffd166;
 }
 

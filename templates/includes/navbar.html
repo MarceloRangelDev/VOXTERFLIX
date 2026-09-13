@@ -32,7 +32,7 @@
             <li><a class="dropdown-item" href="{% url 'profiles:selecionar' %}"><i class="bi bi-people"></i> Trocar de perfil</a></li>
             <li><a class="dropdown-item" href="{% url 'profiles:gerenciar' %}"><i class="bi bi-pencil-square"></i> Gerenciar perfis</a></li>
             <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}"><i class="bi bi-shield-lock"></i> Alterar senha</a></li>
-            {% if user.is_staff %}
+            {% if user.is_staff and not active_profile.is_kids %}
               <li><a class="dropdown-item" href="{% url 'admin:index' %}"><i class="bi bi-speedometer2"></i> Administração</a></li>
             {% endif %}
             <li><hr class="dropdown-divider"></li>

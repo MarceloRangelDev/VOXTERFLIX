@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import math
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -24,6 +25,12 @@ from apps.history.models import WatchHistory
 from apps.profiles.decorators import require_active_profile
 
 logger = logging.getLogger("voxterflix")
+
+# A OMDb sempre devolve no máximo 10 resultados por página e aceita no
+# máximo 100 páginas (documentado em https://www.omdbapi.com/) — a
+# paginação da nossa busca só reflete esse limite, sem inventar um valor.
+OMDB_PAGE_SIZE = 10
+OMDB_MAX_PAGE = 100
 
 
 @login_required
@@ -83,6 +90,7 @@ def search(request):
     results = []
     total = 0
     error_message = None
+    page = 1
 
     if request.GET and form.is_valid():
         rate_key = f"search:{request.user.pk}"
@@ -92,8 +100,11 @@ def search(request):
         else:
             omdb = OMDbService()
             query = form.cleaned_data["q"]
-            page = form.cleaned_data.get("page") or 1
+            page = min(form.cleaned_data.get("page") or 1, OMDB_MAX_PAGE)
             try:
+                # A paginação é repassada direto para a OMDb (parâmetro
+                # "page"): cada requisição busca só os 10 resultados da
+                # página pedida, em vez de trazer o resultado inteiro.
                 results, total = omdb.search(
                     query,
                     type_=form.cleaned_data.get("type", ""),
@@ -102,7 +113,7 @@ def search(request):
                 if form.has_advanced_filters():
                     results = _apply_advanced_filters(omdb, results, form.cleaned_data)
                 else:
-                    results = _apply_sort(results, form.cleaned_data.get("sort"), omdb)
+                    results = _apply_sort(results, form.cleaned_data.get("sort"))
             except OMDbNotFoundError:
                 results, total = [], 0
             except OMDbRateLimitError:
@@ -123,6 +134,14 @@ def search(request):
             if not (hasattr(r, "rated") and is_blocked_for_kids(rated=r.rated, genre=r.genre))
         ]
 
+    # Base da query string sem o "page", para montar os links "Anterior"/
+    # "Próxima" sem duplicar ou perder os demais filtros aplicados.
+    querydict = request.GET.copy()
+    querydict.pop("page", None)
+    base_query_string = querydict.urlencode()
+
+    total_pages = min(math.ceil(total / OMDB_PAGE_SIZE), OMDB_MAX_PAGE) if total else 0
+
     return render(
         request,
         "catalog/search.html",
@@ -132,6 +151,11 @@ def search(request):
             "total": total,
             "error_message": error_message,
             "query_string": request.GET.urlencode(),
+            "base_query_string": base_query_string,
+            "current_page": page,
+            "total_pages": total_pages,
+            "has_previous": page > 1,
+            "has_next": page < total_pages,
         },
     )
 
@@ -171,10 +195,19 @@ def _apply_advanced_filters(omdb: OMDbService, results, filters) -> list:
 
         detailed.append(detail)
 
-    return _apply_sort(detailed, filters.get("sort"), omdb)
+    return _apply_sort(detailed, filters.get("sort"))
 
 
-def _apply_sort(items, sort_key, omdb):
+def _apply_sort(items, sort_key):
+    """Ordena os resultados já carregados, sem buscar mais nada na OMDb.
+
+    Ordenar por nota IMDb só é possível quando os itens já têm essa
+    informação (isto é, quando filtros avançados buscaram o detalhe de
+    cada um — ver `_apply_advanced_filters`). Numa busca simples, os
+    resultados só trazem título/ano/poster, então "ordenar por nota" não
+    dispara uma chamada extra por item — isso é o que deixava a busca
+    lenta antes. Nesse caso, a ordem de relevância da OMDb é mantida.
+    """
     if not sort_key or sort_key == "relevance":
         return items
 
@@ -182,10 +215,7 @@ def _apply_sort(items, sort_key, omdb):
         return _safe_int(getattr(item, "year", "")[:4] if getattr(item, "year", "") else "") or 0
 
     def rating_of(item):
-        if hasattr(item, "imdb_rating"):
-            return _safe_float(item.imdb_rating) or 0
-        detail = _safe_get_detail(omdb, item.imdb_id)
-        return _safe_float(detail.imdb_rating) if detail else 0
+        return _safe_float(getattr(item, "imdb_rating", None)) or 0
 
     if sort_key == "year_desc":
         return sorted(items, key=year_of, reverse=True)

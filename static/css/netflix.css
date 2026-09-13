@@ -45,7 +45,7 @@
 }
 
 .voxter-hero-plot {
-  color: var(--voxter-text-muted);
+  color: var(--voxter-text);
   margin-bottom: 1.5rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
