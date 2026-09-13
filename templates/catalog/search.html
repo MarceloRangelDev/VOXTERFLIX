@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Buscar — VoxterFlix{% endblock %}
+{% block conteudo %}
+<div class="container py-4">
+  <h1 class="h3 mb-4">Buscar filmes e séries</h1>
+
+  <form method="get" class="voxter-card mb-4 voxter-filtros" novalidate>
+    <div class="row g-3 align-items-end">
+      <div class="col-12 col-md-6">
+        <label for="{{ form.q.id_for_label }}">{{ form.q.label }}</label>
+        {{ form.q }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.type.id_for_label }}">{{ form.type.label }}</label>
+        {{ form.type }}
+      </div>
+      <div class="col-6 col-md-3">
+        <button type="button" class="btn voxter-btn-outline w-100" data-toggle-filtros aria-expanded="false" aria-controls="painel-filtros-avancados">
+          <i class="bi bi-sliders"></i> Filtros avançados
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-2 d-none" data-painel-filtros id="painel-filtros-avancados">
+      <div class="col-6 col-md-3">
+        <label for="{{ form.genre.id_for_label }}">{{ form.genre.label }}</label>
+        {{ form.genre }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.year_from.id_for_label }}">{{ form.year_from.label }}</label>
+        {{ form.year_from }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.year_to.id_for_label }}">{{ form.year_to.label }}</label>
+        {{ form.year_to }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.sort.id_for_label }}">{{ form.sort.label }}</label>
+        {{ form.sort }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.rating_min.id_for_label }}">{{ form.rating_min.label }}</label>
+        {{ form.rating_min }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.rating_max.id_for_label }}">{{ form.rating_max.label }}</label>
+        {{ form.rating_max }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
+        {{ form.country }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.language.id_for_label }}">{{ form.language.label }}</label>
+        {{ form.language }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.rated.id_for_label }}">{{ form.rated.label }}</label>
+        {{ form.rated }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.actor.id_for_label }}">{{ form.actor.label }}</label>
+        {{ form.actor }}
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="{{ form.director.id_for_label }}">{{ form.director.label }}</label>
+        {{ form.director }}
+      </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+      <button type="submit" class="btn voxter-btn-primary"><i class="bi bi-search"></i> Buscar</button>
+      <a href="{% url 'catalog:buscar' %}" class="btn voxter-btn-ghost" data-limpar-filtros>Limpar filtros</a>
+    </div>
+  </form>
+
+  {% if error_message %}
+    <div class="alert voxter-alert voxter-alert-danger">{{ error_message }}</div>
+  {% endif %}
+
+  {% if form.has_advanced_filters and results %}
+    <p class="text-muted small">Filtros avançados aplicados sobre os primeiros resultados encontrados na OMDb (ver limitações no README).</p>
+  {% endif %}
+
+  {% if request.GET.q and not results and not error_message %}
+    <div class="voxter-empty-state">
+      <i class="bi bi-search"></i>
+      <p>Nenhum resultado encontrado para "{{ request.GET.q }}".</p>
+    </div>
+  {% endif %}
+
+  {% if results %}
+    <p class="text-muted small">{{ total }} resultado(s) encontrado(s) na OMDb (exibindo esta página).</p>
+    <div class="row g-3">
+      {% for item in results %}
+        <div class="col-6 col-md-3 col-lg-2">
+          {% include "includes/poster_card.html" with imdb_id=item.imdb_id title_text=item.title poster=item.poster year=item.year grid=True %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/search.js' %}"></script>{% endblock %}

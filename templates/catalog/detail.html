@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block titulo %}{{ title.title }} — VoxterFlix{% endblock %}
+{% block conteudo %}
+
+<section class="voxter-detail-backdrop" style="background-image: url('{{ title.poster }}');">
+  <div class="container position-relative" style="z-index:2;">
+    <div class="row g-4 align-items-center">
+      <div class="col-4 col-md-3">
+        {% if title.poster %}
+          <img src="{{ title.poster }}" alt="Poster de {{ title.title }}" class="voxter-detail-poster">
+        {% else %}
+          <div class="voxter-detail-poster d-flex align-items-center justify-content-center" style="aspect-ratio:2/3;background-color:var(--voxter-card);">
+            <i class="bi bi-film fs-1 text-muted"></i>
+          </div>
+        {% endif %}
+      </div>
+      <div class="col-8 col-md-9">
+        <h1 class="h2">{{ title.title }}</h1>
+        <div class="voxter-hero-meta">
+          {% if title.year %}<span class="voxter-badge">{{ title.year }}</span>{% endif %}
+          {% if title.runtime %}<span class="voxter-badge">{{ title.runtime }}</span>{% endif %}
+          {% if title.rated %}<span class="voxter-badge">{{ title.rated }}</span>{% endif %}
+          {% if title.imdb_rating %}<span class="voxter-badge voxter-badge-rating"><i class="bi bi-star-fill"></i> {{ title.imdb_rating }} ({{ title.imdb_votes }} votos)</span>{% endif %}
+        </div>
+        {% if title.genre %}<p class="text-muted mb-3">{{ title.genre }}</p>{% endif %}
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          {% if title.type == "series" %}
+            <a href="{% url 'streaming:assistir_episodio' title.imdb_id 1 1 %}" class="btn voxter-btn-primary"><i class="bi bi-play-fill"></i> Assistir T1E1</a>
+          {% else %}
+            <a href="{% url 'streaming:assistir_filme' title.imdb_id %}" class="btn voxter-btn-primary"><i class="bi bi-play-fill"></i> Assistir</a>
+          {% endif %}
+
+          <form method="post" action="{% url 'favorites:alternar' title.imdb_id %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="btn voxter-btn-outline">
+              {% if is_favorite %}<i class="bi bi-check-lg"></i> Na minha lista{% else %}<i class="bi bi-plus-lg"></i> Minha lista{% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <h2 class="h5">Sinopse</h2>
+      <p class="text-muted">{{ title.plot|default:"Sinopse não disponível." }}</p>
+
+      {% if title.type == "series" and title.total_seasons %}
+        <h2 class="h5 mt-4">Assistir por temporada e episódio</h2>
+        <form method="get" action="#" class="d-flex flex-wrap gap-2 align-items-end voxter-card"
+              onsubmit="event.preventDefault(); window.location.href=this.dataset.base.replace(/0\/0\/$/, this.temporada.value + '/' + this.episodio.value + '/');"
+              data-base="{% url 'streaming:assistir_episodio' title.imdb_id 0 0 %}">
+          {% comment %} O onsubmit troca o sufixo "0/0/" (placeholder) pelos valores escolhidos antes de navegar. {% endcomment %}
+          <div>
+            <label for="temporada-select">Temporada</label>
+            <select id="temporada-select" name="temporada" class="form-select">
+              {% for numero in seasons_range %}<option value="{{ numero }}">{{ numero }}</option>{% endfor %}
+            </select>
+          </div>
+          <div>
+            <label for="episodio-select">Episódio</label>
+            <input id="episodio-select" name="episodio" type="number" min="1" value="1" class="form-control" style="width:100px;">
+          </div>
+          <button type="submit" class="btn voxter-btn-primary">Ir</button>
+        </form>
+      {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+      <div class="voxter-card">
+        <dl class="mb-0">
+          {% if title.director %}<dt class="small text-muted">Diretor</dt><dd>{{ title.director }}</dd>{% endif %}
+          {% if title.writer %}<dt class="small text-muted">Roteiristas</dt><dd>{{ title.writer }}</dd>{% endif %}
+          {% if title.actors %}<dt class="small text-muted">Elenco</dt><dd>{{ title.actors }}</dd>{% endif %}
+          {% if title.country %}<dt class="small text-muted">País</dt><dd>{{ title.country }}</dd>{% endif %}
+          {% if title.language %}<dt class="small text-muted">Idioma</dt><dd>{{ title.language }}</dd>{% endif %}
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

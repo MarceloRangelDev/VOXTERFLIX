@@ -1,0 +1,20 @@
+{% comment %}
+Cartão de poster reutilizado nos carrosséis da Home, na busca, em "Minha
+Lista" e no histórico. Espera no contexto: `imdb_id`, `title_text`,
+`poster`, `year` (opcional), `percent` (opcional, para a barra de progresso).
+{% endcomment %}
+<a href="{% url 'catalog:detalhe' imdb_id %}" class="voxter-poster-card{% if grid %} voxter-poster-card--grid{% endif %}" tabindex="0">
+  {% if poster %}
+    <img src="{{ poster }}" alt="Poster de {{ title_text }}" loading="lazy">
+  {% else %}
+    <div class="d-flex align-items-center justify-content-center" style="aspect-ratio:2/3;background-color:var(--voxter-bg-secondary);">
+      <i class="bi bi-film fs-1 text-muted" aria-hidden="true"></i>
+    </div>
+  {% endif %}
+  <p class="voxter-poster-title">{{ title_text }}{% if year %} ({{ year }}){% endif %}</p>
+  {% if percent is not None %}
+    <div class="voxter-poster-progress">
+      <div class="voxter-poster-progress-bar" style="width: {{ percent }}%"></div>
+    </div>
+  {% endif %}
+</a>

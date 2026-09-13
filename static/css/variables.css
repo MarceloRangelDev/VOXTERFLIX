@@ -1,0 +1,27 @@
+/*
+ * Paleta de cores do VoxterFlix.
+ * Estes valores são uma implementação própria inspirada na identidade da
+ * Voxter para este projeto — não são códigos HEX oficiais publicados pela
+ * empresa.
+ */
+:root {
+  --voxter-primary: #0066FF;
+  --voxter-primary-dark: #0047B3;
+  --voxter-secondary: #00AEEF;
+
+  --voxter-bg: #07111F;
+  --voxter-bg-secondary: #0D1B2A;
+  --voxter-card: #13263A;
+
+  --voxter-text: #FFFFFF;
+  --voxter-text-muted: #A8B6C7;
+
+  --voxter-border: #243B53;
+
+  --success: #20C997;
+  --danger: #FF4D67;
+
+  --voxter-radius: 10px;
+  --voxter-radius-sm: 6px;
+  --voxter-transition: 0.2s ease;
+}

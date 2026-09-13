@@ -1,0 +1,13 @@
+{% extends "notifications/email/_base_email.html" %}
+{% block conteudo %}
+  <h1 style="font-size:20px;margin:0 0 16px;color:#FFFFFF;">Confirme seu e-mail</h1>
+  <p>Olá, {{ user.first_name|default:user.username }}!</p>
+  <p>Falta só um passo para você começar a usar o VoxterFlix. Confirme seu endereço de e-mail clicando no botão abaixo:</p>
+  <p style="text-align:center;margin:28px 0;">
+    <a href="{{ confirm_url }}" style="background-color:#0066FF;color:#FFFFFF;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:600;display:inline-block;">Confirmar e-mail</a>
+  </p>
+  <p style="color:#A8B6C7;font-size:13px;">Se o botão não funcionar, copie e cole este link no navegador:<br>
+    <a href="{{ confirm_url }}" style="color:#00AEEF;">{{ confirm_url }}</a>
+  </p>
+  <p style="color:#A8B6C7;font-size:13px;">Este link expira em algumas horas por segurança.</p>
+{% endblock %}

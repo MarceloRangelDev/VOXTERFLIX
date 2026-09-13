@@ -1,0 +1,193 @@
+/* Botões, cards, formulários, avatares e outros componentes reutilizáveis. */
+
+.voxter-btn-primary {
+  background-color: var(--voxter-primary);
+  border-color: var(--voxter-primary);
+  color: #fff;
+  font-weight: 600;
+  transition: background-color var(--voxter-transition), transform var(--voxter-transition);
+}
+
+.voxter-btn-primary:hover {
+  background-color: var(--voxter-primary-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.voxter-btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--voxter-border);
+  color: var(--voxter-text);
+  font-weight: 600;
+}
+
+.voxter-btn-outline:hover {
+  border-color: var(--voxter-secondary);
+  color: var(--voxter-secondary);
+}
+
+.voxter-btn-ghost {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--voxter-text);
+  font-weight: 600;
+}
+
+.voxter-btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+  color: var(--voxter-text);
+}
+
+/* Cartões genéricos (formulários, painéis) */
+.voxter-card {
+  background-color: var(--voxter-card);
+  border: 1px solid var(--voxter-border);
+  border-radius: var(--voxter-radius);
+  padding: 2rem;
+}
+
+.voxter-card-narrow {
+  max-width: 420px;
+  margin: 3rem auto;
+}
+
+/* Formulários */
+/* Cobre também formulários oficiais do Django (ex.: PasswordResetForm,
+   SetPasswordForm) cujos widgets não recebem a classe "form-control". */
+.voxter-card input[type="text"],
+.voxter-card input[type="email"],
+.voxter-card input[type="password"],
+.voxter-card .form-control,
+.voxter-card .form-select {
+  background-color: var(--voxter-bg-secondary);
+  border: 1px solid var(--voxter-border);
+  color: var(--voxter-text);
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--voxter-radius-sm);
+}
+
+.voxter-card .form-control:focus,
+.voxter-card .form-select:focus {
+  background-color: var(--voxter-bg-secondary);
+  color: var(--voxter-text);
+  border-color: var(--voxter-secondary);
+  box-shadow: 0 0 0 0.2rem rgba(0, 174, 239, 0.25);
+}
+
+.voxter-card label {
+  color: var(--voxter-text-muted);
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.form-text,
+.invalid-feedback {
+  color: var(--voxter-text-muted);
+}
+
+.is-invalid ~ .invalid-feedback,
+.text-danger {
+  color: var(--danger) !important;
+}
+
+/* Avatares de perfil */
+.voxter-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-weight: 700;
+  color: #fff;
+}
+
+.voxter-avatar-azul { background-color: var(--voxter-primary); }
+.voxter-avatar-ciano { background-color: var(--voxter-secondary); }
+.voxter-avatar-verde { background-color: var(--success); }
+.voxter-avatar-laranja { background-color: #ff9f45; }
+.voxter-avatar-roxo { background-color: #7c5cff; }
+.voxter-avatar-vermelho { background-color: var(--danger); }
+
+.voxter-avatar-lg {
+  width: 96px;
+  height: 96px;
+  font-size: 2rem;
+}
+
+.voxter-profile-card {
+  transition: transform var(--voxter-transition);
+}
+
+.voxter-profile-card:hover .voxter-avatar-lg,
+.voxter-profile-card:focus-visible .voxter-avatar-lg {
+  outline: 3px solid var(--voxter-secondary);
+  transform: scale(1.05);
+}
+
+.voxter-avatar-btn {
+  background: transparent;
+  border: none;
+  color: var(--voxter-text);
+}
+
+.voxter-dropdown {
+  background-color: var(--voxter-card);
+  border: 1px solid var(--voxter-border);
+}
+
+.voxter-dropdown .dropdown-item {
+  color: var(--voxter-text);
+}
+
+.voxter-dropdown .dropdown-item:hover {
+  background-color: var(--voxter-bg-secondary);
+  color: var(--voxter-secondary);
+}
+
+/* Badges de classificação/nota */
+.voxter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background-color: var(--voxter-bg-secondary);
+  border: 1px solid var(--voxter-border);
+  border-radius: var(--voxter-radius-sm);
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  color: var(--voxter-text-muted);
+}
+
+.voxter-badge-rating {
+  color: #ffd166;
+  border-color: #ffd166;
+}
+
+/* Skeleton loading */
+.voxter-skeleton {
+  background: linear-gradient(90deg, var(--voxter-card) 25%, var(--voxter-border) 50%, var(--voxter-card) 75%);
+  background-size: 200% 100%;
+  animation: voxter-shimmer 1.4s infinite;
+  border-radius: var(--voxter-radius-sm);
+}
+
+@keyframes voxter-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Empty states */
+.voxter-empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--voxter-text-muted);
+}
+
+.voxter-empty-state i {
+  font-size: 3rem;
+  color: var(--voxter-border);
+  margin-bottom: 1rem;
+  display: block;
+}

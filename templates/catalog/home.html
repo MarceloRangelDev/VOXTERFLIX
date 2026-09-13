@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}VoxterFlix — Início{% endblock %}
+{% block conteudo %}
+
+{% if featured %}
+  <section class="voxter-hero" style="background-image: url('{{ featured.poster }}');">
+    <div class="voxter-hero-content">
+      <h1 class="voxter-hero-title">{{ featured.title }}</h1>
+      <div class="voxter-hero-meta">
+        <span class="voxter-badge">{{ featured.year }}</span>
+        {% if featured.imdb_rating %}<span class="voxter-badge voxter-badge-rating"><i class="bi bi-star-fill"></i> {{ featured.imdb_rating }}</span>{% endif %}
+        {% if featured.genre %}<span class="voxter-badge">{{ featured.genre }}</span>{% endif %}
+      </div>
+      <p class="voxter-hero-plot">{{ featured.plot }}</p>
+      <div class="d-flex gap-2">
+        {% if featured.type == "series" %}
+          <a href="{% url 'streaming:assistir_episodio' featured.imdb_id 1 1 %}" class="btn voxter-btn-primary"><i class="bi bi-play-fill"></i> Assistir</a>
+        {% else %}
+          <a href="{% url 'streaming:assistir_filme' featured.imdb_id %}" class="btn voxter-btn-primary"><i class="bi bi-play-fill"></i> Assistir</a>
+        {% endif %}
+        <a href="{% url 'catalog:detalhe' featured.imdb_id %}" class="btn voxter-btn-outline"><i class="bi bi-info-circle"></i> Mais informações</a>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if continue_watching %}
+  <section class="voxter-row" data-carousel>
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="voxter-row-title">Continuar assistindo</h2>
+      <div class="d-none d-md-flex gap-2">
+        <button class="btn btn-sm voxter-btn-ghost" data-carousel-prev aria-label="Rolar para a esquerda"><i class="bi bi-chevron-left"></i></button>
+        <button class="btn btn-sm voxter-btn-ghost" data-carousel-next aria-label="Rolar para a direita"><i class="bi bi-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="voxter-carousel">
+      {% for item in continue_watching %}
+        {% include "includes/poster_card.html" with imdb_id=item.imdb_id title_text=item.title poster=item.poster percent=item.percent %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+{% for carousel in carousels %}
+  <section class="voxter-row" data-carousel>
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="voxter-row-title">{{ carousel.category.name }}</h2>
+      <div class="d-none d-md-flex gap-2">
+        <button class="btn btn-sm voxter-btn-ghost" data-carousel-prev aria-label="Rolar para a esquerda"><i class="bi bi-chevron-left"></i></button>
+        <button class="btn btn-sm voxter-btn-ghost" data-carousel-next aria-label="Rolar para a direita"><i class="bi bi-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="voxter-carousel">
+      {% for item in carousel.items %}
+        {% include "includes/poster_card.html" with imdb_id=item.imdb_id title_text=item.title poster=item.poster year=item.year %}
+      {% endfor %}
+    </div>
+  </section>
+{% endfor %}
+
+{% if not carousels and not featured %}
+  <div class="voxter-empty-state">
+    <i class="bi bi-film"></i>
+    <p>Não foi possível carregar o catálogo agora.</p>
+    <p class="small">Verifique se a variável <code>OMDB_API_KEY</code> está configurada no arquivo <code>.env</code>.</p>
+  </div>
+{% endif %}
+
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/catalog.js' %}"></script>{% endblock %}

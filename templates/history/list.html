@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}Histórico — VoxterFlix{% endblock %}
+{% block conteudo %}
+<div class="container py-4">
+  <h1 class="h3 mb-4">Histórico de visualização</h1>
+
+  {% if items %}
+    <div class="voxter-card p-0">
+      <table class="table table-borderless align-middle mb-0" style="color: var(--voxter-text);">
+        <thead>
+          <tr class="text-muted small">
+            <th>Título</th>
+            <th>Progresso</th>
+            <th>Última visualização</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>
+                <a href="{% url 'catalog:detalhe' item.imdb_id %}">{{ item.title }}</a>
+                {% if item.season %}<span class="text-muted small"> — T{{ item.season }}E{{ item.episode }}</span>{% endif %}
+              </td>
+              <td style="width: 200px;">
+                <div class="voxter-poster-progress"><div class="voxter-poster-progress-bar" style="width: {{ item.percent }}%"></div></div>
+                <span class="small text-muted">{{ item.percent|floatformat:0 }}%</span>
+              </td>
+              <td class="small text-muted">{{ item.updated_at|date:"d/m/Y H:i" }}</td>
+              <td>
+                <form method="post" action="{% url 'history:remover' item.pk %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm voxter-btn-ghost text-danger"><i class="bi bi-trash"></i></button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="voxter-empty-state">
+      <i class="bi bi-clock-history"></i>
+      <p>Você ainda não assistiu nada.</p>
+      <a href="{% url 'catalog:home' %}" class="btn voxter-btn-primary mt-2">Explorar catálogo</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

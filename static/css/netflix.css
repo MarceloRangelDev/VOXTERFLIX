@@ -1,0 +1,190 @@
+/*
+ * Componentes inspirados na experiência de streaming: banner de destaque,
+ * carrosséis horizontais e player. O nome do arquivo reflete o tipo de
+ * experiência (streaming), não uma cópia da identidade visual da Netflix.
+ */
+
+/* Hero banner */
+.voxter-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: top center;
+  border-radius: 0 0 var(--voxter-radius) var(--voxter-radius);
+  overflow: hidden;
+}
+
+.voxter-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 17, 31, 0.1) 0%, var(--voxter-bg) 95%),
+    linear-gradient(90deg, rgba(7, 17, 31, 0.85) 0%, rgba(7, 17, 31, 0.15) 60%);
+}
+
+.voxter-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem 2rem;
+  max-width: 640px;
+}
+
+.voxter-hero-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.voxter-hero-meta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.voxter-hero-plot {
+  color: var(--voxter-text-muted);
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Carrosséis */
+.voxter-row {
+  margin: 1.75rem 0;
+  padding: 0 1.5rem;
+}
+
+.voxter-row-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.voxter-carousel {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--voxter-border) transparent;
+  /* Comportamento de touch mais natural em celulares/tablets. */
+  -webkit-overflow-scrolling: touch;
+}
+
+.voxter-carousel::-webkit-scrollbar {
+  height: 6px;
+}
+
+.voxter-carousel::-webkit-scrollbar-thumb {
+  background-color: var(--voxter-border);
+  border-radius: 4px;
+}
+
+.voxter-poster-card {
+  flex: 0 0 auto;
+  width: 160px;
+  border-radius: var(--voxter-radius-sm);
+  overflow: hidden;
+  background-color: var(--voxter-card);
+  border: 1px solid var(--voxter-border);
+  transition: transform var(--voxter-transition), box-shadow var(--voxter-transition);
+  cursor: pointer;
+}
+
+.voxter-poster-card--grid {
+  width: 100%;
+}
+
+.voxter-poster-card:hover,
+.voxter-poster-card:focus-within {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+  z-index: 3;
+}
+
+.voxter-poster-card img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+  background-color: var(--voxter-bg-secondary);
+}
+
+.voxter-poster-card .voxter-poster-title {
+  padding: 0.5rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--voxter-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.voxter-poster-progress {
+  height: 4px;
+  background-color: var(--voxter-border);
+}
+
+.voxter-poster-progress-bar {
+  height: 100%;
+  background-color: var(--voxter-primary);
+}
+
+/* Página de detalhes */
+.voxter-detail-backdrop {
+  background-size: cover;
+  background-position: top center;
+  position: relative;
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+}
+
+.voxter-detail-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 17, 31, 0.4), var(--voxter-bg) 95%);
+}
+
+.voxter-detail-poster {
+  width: 100%;
+  max-width: 280px;
+  border-radius: var(--voxter-radius);
+  border: 1px solid var(--voxter-border);
+}
+
+/* Player */
+.voxter-player-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #000;
+  border-radius: var(--voxter-radius);
+  overflow: hidden;
+}
+
+.voxter-player-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.voxter-player-loading,
+.voxter-player-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--voxter-text-muted);
+  text-align: center;
+  padding: 2rem;
+}

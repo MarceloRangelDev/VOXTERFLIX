@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}{% if title %}{{ title.title }} — {% endif %}Player — VoxterFlix{% endblock %}
+{% block conteudo %}
+<div class="container py-4">
+  <a href="{% if title %}{% url 'catalog:detalhe' title.imdb_id %}{% else %}{% url 'catalog:home' %}{% endif %}" class="btn voxter-btn-ghost mb-3">
+    <i class="bi bi-arrow-left"></i> Voltar
+  </a>
+
+  {% if title %}<h1 class="h4 mb-3">{{ title.title }}{% if season %} — T{{ season }}E{{ episode }}{% endif %}</h1>{% endif %}
+
+  {% if embed_url %}
+    <div
+      data-player-container
+      data-imdb-id="{{ title.imdb_id }}"
+      data-season="{{ season|default:0 }}"
+      data-episode="{{ episode|default:0 }}"
+      data-title="{{ title.title }}"
+      data-poster="{{ title.poster }}"
+      data-type="{{ title.type }}"
+      data-duration="{{ duration_seconds|default:0 }}"
+      data-progress-url="{% url 'history:progresso' %}"
+    >
+      <div class="voxter-player-wrapper">
+        <div class="voxter-player-loading" data-player-loading>
+          <div class="spinner-border text-info" role="status"><span class="visually-hidden">Carregando...</span></div>
+          <p>Carregando player...</p>
+        </div>
+        <iframe src="{{ embed_url }}" allowfullscreen allow="autoplay; fullscreen" title="Player de {{ title.title }}"></iframe>
+      </div>
+      <div class="d-flex justify-content-end mt-2">
+        <button class="btn voxter-btn-outline btn-sm" data-fullscreen-btn><i class="bi bi-arrows-fullscreen"></i> Tela cheia</button>
+      </div>
+    </div>
+  {% else %}
+    <div class="voxter-player-wrapper">
+      <div class="voxter-player-error">
+        <i class="bi bi-exclamation-triangle fs-1 text-warning"></i>
+        <p class="mb-0">{{ error_message|default:"Não foi possível carregar o player agora." }}</p>
+        {% if title %}<a href="{% url 'catalog:detalhe' title.imdb_id %}" class="btn voxter-btn-outline mt-2">Voltar para os detalhes</a>{% endif %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/player.js' %}"></script>{% endblock %}

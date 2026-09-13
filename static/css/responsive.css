@@ -1,0 +1,44 @@
+/* Ajustes de responsividade (mobile-first: as regras base já são pensadas
+   para telas pequenas; aqui ampliamos para telas maiores e ajustamos
+   detalhes específicos de breakpoints menores). */
+
+@media (max-width: 575.98px) {
+  .voxter-hero-content {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .voxter-row {
+    padding: 0 1rem;
+  }
+
+  .voxter-poster-card {
+    width: 128px;
+  }
+
+  .voxter-search-input {
+    min-width: 140px;
+  }
+
+  .voxter-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .voxter-poster-card {
+    width: 145px;
+  }
+}
+
+@media (min-width: 992px) {
+  .voxter-poster-card {
+    width: 175px;
+  }
+}
+
+/* Filtros avançados: em telas pequenas os campos ficam em coluna única. */
+@media (max-width: 767.98px) {
+  .voxter-filtros .row > div {
+    margin-bottom: 0.75rem;
+  }
+}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Minha Lista — VoxterFlix{% endblock %}
+{% block conteudo %}
+<div class="container py-4">
+  <h1 class="h3 mb-4">Minha Lista</h1>
+
+  {% if favorites %}
+    <div class="row g-3">
+      {% for favorite in favorites %}
+        <div class="col-6 col-md-3 col-lg-2">
+          {% include "includes/poster_card.html" with imdb_id=favorite.imdb_id title_text=favorite.title poster=favorite.poster year=favorite.year grid=True %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="voxter-empty-state">
+      <i class="bi bi-bookmark-heart"></i>
+      <p>Sua lista está vazia.</p>
+      <a href="{% url 'catalog:home' %}" class="btn voxter-btn-primary mt-2">Explorar catálogo</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+/* Reset leve, tipografia e estrutura geral da página. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--voxter-bg);
+  color: var(--voxter-text);
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--voxter-secondary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--voxter-primary);
+}
+
+/* Link "pular para o conteúdo" — só aparece com foco de teclado. */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  background: var(--voxter-primary);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: var(--voxter-radius-sm);
+  z-index: 2000;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+/* Foco visível e consistente em toda a aplicação, essencial para navegação por teclado. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.form-check-input:focus-visible {
+  outline: 3px solid var(--voxter-secondary);
+  outline-offset: 2px;
+}
+
+/* Navbar */
+.voxter-navbar {
+  background-color: rgba(7, 17, 31, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--voxter-border);
+  padding: 0.75rem 0;
+}
+
+.voxter-brand {
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.5px;
+  color: var(--voxter-text) !important;
+}
+
+.voxter-brand-accent {
+  color: var(--voxter-secondary);
+}
+
+.voxter-navbar .nav-link {
+  color: var(--voxter-text-muted);
+  font-weight: 500;
+}
+
+.voxter-navbar .nav-link:hover,
+.voxter-navbar .nav-link.active {
+  color: var(--voxter-text);
+}
+
+.voxter-search-input {
+  background-color: var(--voxter-bg-secondary);
+  border: 1px solid var(--voxter-border);
+  color: var(--voxter-text);
+  min-width: 220px;
+}
+
+.voxter-search-input::placeholder {
+  color: var(--voxter-text-muted);
+}
+
+.voxter-search-input:focus {
+  background-color: var(--voxter-bg-secondary);
+  color: var(--voxter-text);
+  border-color: var(--voxter-secondary);
+  box-shadow: 0 0 0 0.2rem rgba(0, 174, 239, 0.25);
+}
+
+/* Footer */
+.voxter-footer {
+  border-top: 1px solid var(--voxter-border);
+  background-color: var(--voxter-bg-secondary);
+}
+
+.voxter-footer-brand {
+  font-weight: 700;
+}
+
+/* Mensagens/alertas do Django messages framework */
+.voxter-alert {
+  background-color: var(--voxter-card);
+  border: 1px solid var(--voxter-border);
+  color: var(--voxter-text);
+  border-radius: var(--voxter-radius);
+}
+
+.voxter-alert-success {
+  border-color: var(--success);
+}
+
+.voxter-alert-error,
+.voxter-alert-danger {
+  border-color: var(--danger);
+}
+
+.voxter-alert-warning {
+  border-color: #f5b942;
+}

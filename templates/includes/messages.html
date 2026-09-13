@@ -1,0 +1,11 @@
+{% if messages %}
+  <div class="container-fluid px-3 px-lg-4 mt-3" aria-live="polite">
+    {% for message in messages %}
+      <div class="alert voxter-alert voxter-alert-{{ message.tags|default:'info' }} d-flex align-items-center" role="alert">
+        <i class="bi bi-info-circle me-2" aria-hidden="true"></i>
+        <div>{{ message }}</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

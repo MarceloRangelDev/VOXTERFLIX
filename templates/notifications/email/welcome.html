@@ -1,0 +1,10 @@
+{% extends "notifications/email/_base_email.html" %}
+{% block conteudo %}
+  <h1 style="font-size:20px;margin:0 0 16px;color:#FFFFFF;">Bem-vindo(a) ao VoxterFlix!</h1>
+  <p>Olá, {{ user.first_name|default:user.username }}!</p>
+  <p>Sua conta foi confirmada com sucesso. Agora você pode criar seus perfis, montar sua lista de favoritos e explorar o catálogo.</p>
+  <p style="text-align:center;margin:28px 0;">
+    <a href="{{ site_url|default:"http://127.0.0.1:8000" }}" style="background-color:#0066FF;color:#FFFFFF;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:600;display:inline-block;">Começar a explorar</a>
+  </p>
+  <p style="color:#A8B6C7;font-size:13px;">Bom filme (ou série)!</p>
+{% endblock %}

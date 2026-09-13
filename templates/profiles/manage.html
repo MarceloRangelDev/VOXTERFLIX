@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Gerenciar perfis — VoxterFlix{% endblock %}
+{% block conteudo %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Gerenciar perfis</h1>
+    {% if can_add %}
+      <a href="{% url 'profiles:criar' %}" class="btn voxter-btn-primary"><i class="bi bi-plus-lg"></i> Novo perfil</a>
+    {% endif %}
+  </div>
+
+  <p class="text-muted small">{{ profiles.count }} de {{ max_profiles }} perfis usados.</p>
+
+  <div class="row g-3">
+    {% for profile in profiles %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="voxter-card d-flex align-items-center gap-3">
+          <span class="voxter-avatar voxter-avatar-lg voxter-avatar-{{ profile.avatar }}">{{ profile.name|first|upper }}</span>
+          <div class="flex-grow-1">
+            <p class="mb-1 fw-semibold">{{ profile.name }}</p>
+            {% if profile.is_kids %}<span class="voxter-badge">Infantil</span>{% endif %}
+            <div class="mt-2 d-flex gap-2">
+              <a href="{% url 'profiles:editar' profile.id %}" class="btn btn-sm voxter-btn-outline">Editar</a>
+              <form method="post" action="{% url 'profiles:excluir' profile.id %}" onsubmit="return confirm('Remover este perfil? Os favoritos e o histórico dele serão apagados.');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm voxter-btn-ghost text-danger">Excluir</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
